@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http:mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<!-- 1.타입 alias 설정 : 선택적 (resultType)-->
+	<typeAliases>
+		<typeAlias alias="datavo" type="com.khw.vision.DataVO" />
+		<typeAlias alias="colorvo" type="com.khw.vision.ColorVO" />
+		<typeAlias alias="storevo" type="com.khw.vision.StoreVO" />
+		<typeAlias alias="regionvo" type="com.khw.vision.RegionVO" />
+		<typeAlias alias="textvo" type="com.khw.vision.TextVO" />
+		<typeAlias alias="searchvo" type="com.khw.vision.SearchVO" />
+	</typeAliases>
+
+</configuration>

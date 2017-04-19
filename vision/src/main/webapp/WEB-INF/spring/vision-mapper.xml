@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http:mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="vision">
+
+	<insert id="storeInput"  parameterType="storevo">
+		insert into store values(store_seq.nextval,#{business_code},#{rcode},#{userid},#{operating_time},#{store_name},0)
+	</insert>
+	
+	<select id="regionAll" resultType="regionvo">
+		select rcode, rname from region
+	</select>
+	
+	<insert id="textInput" parameterType="textvo">
+		insert into store_text values(#{store_code},#{text})
+	</insert>
+	
+	<insert id="colorInput" parameterType="colorvo">
+		insert into store_color values(#{store_code},#{red},#{blue},#{green})
+	</insert>
+	
+	<select id="getStoreAll" resultType="storevo">
+		select store_code, business_code, rcode, userid, operating_time, store_name, view_count,
+		(select count(*) from store_text st where st.store_code = s.store_code) store_text, 
+		(select count(*) from store_color sc where sc.store_code = s.store_code) store_color 
+		from store s
+	</select>
+	
+	<select id="searchStore" resultType="storevo" parameterType="searchvo">
+		select distinct(s.store_code), business_code, rcode, userid, operating_time, store_name, view_count,
+		(select count(*) from store_text st where st.store_code = s.store_code) store_text, 
+		(select count(*) from store_color sc where sc.store_code = s.store_code) store_color 
+		from store s, store_text st, store_color sc
+		where s.store_code = st.store_code and s.store_code = sc.store_code and s.rcode = #{rcode}
+		and (select max(red) from store_color where store_code = s.store_code) >= #{red}
+		and (select max(blue) from store_color where store_code = s.store_code) >= #{blue}
+		and (select max(green) from store_color where store_code = s.store_code) >= #{green}
+		and st.text like '%'||#{text}||'%'
+	</select>
+	
+	<select id="haveText" resultType="storevo" parameterType="textvo" >
+		select * 
+		from store_text
+		where store_code = #{store_code} and text like #{text}
+	</select>
+	
+	<select id="haveColor" resultType="storevo" parameterType="colorvo" >
+		select * 
+		from store_color
+		where store_code = #{store_code} and 
+		red = #{red} and blue = #{blue} and green = #{green}
+	</select>
+	
+	<select id="getStoreText" resultType="textvo" parameterType="int">
+		select text from store_text where store_code = #{num}
+	</select>
+	
+	<select id="getStoreColor" resultType="colorvo" parameterType="int">
+		select red,blue,green from store_color where store_code = #{num}
+	</select>
+	
+	
+</mapper>
